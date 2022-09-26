@@ -1,11 +1,15 @@
 ﻿use std::fs;
+<<<<<<< HEAD
 use std::env;
+=======
+>>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
 use std::error::Error;
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>>{
     let contents = fs::read_to_string(&config.filename)?;
 
     println!("Search for: \"{}\"", config.query);
+<<<<<<< HEAD
     println!("Open with: \"{}\"", config.filename);
     println!("Trim with: \"{}\"", config.trim_case);
     
@@ -18,23 +22,37 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>>{
             println!("{}",line);
         }
     } 
+=======
+    println!("open with: \"{}\"", config.filename);
+    println!("\nopen with:\n{}",contents);
+
+>>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
     Ok(())
 }
 
 pub struct Config {
     pub query: String,
+<<<<<<< HEAD
     pub filename: String,
     pub trim_case: String,
     pub case_insensitive: bool
+=======
+    pub filename: String
+>>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
 }
 
 impl Config {
     pub fn new (args: &[String]) -> Result<Config, &'static str> {
+<<<<<<< HEAD
         if args.len() != 4 {
+=======
+        if args.len() != 3 {
+>>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
             return Err("wrong argumens!");
         }
         let query = args[1].clone();
         let filename = args[2].clone();
+<<<<<<< HEAD
         let trim_case = args[3].clone();
         let case_insensitive = env::var("CASE_INSENSEITIVE").is_ok();
     
@@ -95,5 +113,9 @@ Trust me.";
         assert_eq!(
             vec!["safe, fast, productive."], 
             search_case_insensitive(query, contents));
+=======
+    
+        Ok(Config { query, filename })
+>>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
     }
 }
