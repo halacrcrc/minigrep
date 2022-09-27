@@ -1,15 +1,11 @@
 ﻿use std::fs;
-<<<<<<< HEAD
 use std::env;
-=======
->>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
 use std::error::Error;
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>>{
     let contents = fs::read_to_string(&config.filename)?;
 
     println!("Search for: \"{}\"", config.query);
-<<<<<<< HEAD
     println!("Open with: \"{}\"", config.filename);
     println!("Trim with: \"{}\"", config.trim_case);
     
@@ -22,38 +18,37 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>>{
             println!("{}",line);
         }
     } 
-=======
-    println!("open with: \"{}\"", config.filename);
-    println!("\nopen with:\n{}",contents);
-
->>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
     Ok(())
 }
 
 pub struct Config {
     pub query: String,
-<<<<<<< HEAD
     pub filename: String,
     pub trim_case: String,
     pub case_insensitive: bool
-=======
-    pub filename: String
->>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
 }
 
 impl Config {
-    pub fn new (args: &[String]) -> Result<Config, &'static str> {
-<<<<<<< HEAD
+    pub fn new (mut args: std::env::Args) -> Result<Config, &'static str> {
         if args.len() != 4 {
-=======
-        if args.len() != 3 {
->>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
             return Err("wrong argumens!");
         }
-        let query = args[1].clone();
-        let filename = args[2].clone();
-<<<<<<< HEAD
-        let trim_case = args[3].clone();
+        args.next();
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("没见着字符啊")
+        };
+
+        let filename = match args.next() {
+            Some(filename) => filename,
+            None => return Err("没见着文件啊")
+        };
+
+        let trim_case = match args.next() {
+            Some(trim_case) => trim_case,
+            None => return Err("没见着要删的啊")
+        };
+
         let case_insensitive = env::var("CASE_INSENSEITIVE").is_ok();
     
         Ok(Config { query, filename, trim_case,case_insensitive })
@@ -61,16 +56,21 @@ impl Config {
 }
 
 pub fn search<'a>(query: &str, contents:&'a str, trim_case: &str) -> Vec<&'a str>{
-    let mut results = Vec::new();
+    // let mut results = Vec::new();
     
-    for line in contents.lines() {
-        let line1 = line.trim_start_matches(trim_case).trim();
-        if line.contains(query) {
-            results.push(line1);
-        }
-    }
+    // for line in contents.lines() {
+    //     let line1 = line.trim_start_matches(trim_case).trim();
+    //     if line.contains(query) {
+    //         results.push(line1);
+    //     }
+    // }
 
-    results
+    // results
+    
+    contents.lines()
+        .filter(|line| line.trim().contains(query))
+        .collect()
+
 }
 
 pub fn search_case_insensitive<'a>(query: &str, contents:&'a str) -> Vec<&'a str>{
@@ -113,9 +113,5 @@ Trust me.";
         assert_eq!(
             vec!["safe, fast, productive."], 
             search_case_insensitive(query, contents));
-=======
-    
-        Ok(Config { query, filename })
->>>>>>> 671073eba19e6a70c4aaa608221ee036830f71e0
     }
 }
